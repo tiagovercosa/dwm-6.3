@@ -123,10 +123,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_h,      setcfact,       {.f = +0.25} },
-	{ MODKEY|ShiftMask,             XK_l,      setcfact,       {.f = -0.25} },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.01} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.01} },
+	{ MODKEY|ShiftMask,             XK_h,      setcfact,       {.f = +0.05} },
+	{ MODKEY|ShiftMask,             XK_l,      setcfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY|Mod4Mask,              XK_u,      incrgaps,       {.i = +1 } },
@@ -150,7 +150,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ControlMask,		XK_comma,  cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,			XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
@@ -171,6 +171,38 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
 	{ MODKEY|ShiftMask,				XK_r,      quit,           {1} }, 
+
+	/* Dmenu scripts launched with ALT + CTRL + KEY */
+  	{ Mod1Mask|ControlMask,         XK_q,      spawn,          SHCMD("~/.local/bin/dmenu-logout.sh") },
+  	{ Mod1Mask|ControlMask,         XK_m,      spawn,          SHCMD("~/.local/bin/dmenu-monitor.sh") },
+
+  	/* Change the volume */
+  	{ 0,              XF86XK_AudioLowerVolume, spawn,          SHCMD("pactl set-sink-volume 0 -5%; pkill -RTMIN+10 dwmblocks")},
+  	{ 0,              XF86XK_AudioMute,        spawn,          SHCMD("pactl set-sink-mute 0 toggle; pkill -RTMIN+10 dwmblocks")},
+  	{ 0,              XF86XK_AudioRaiseVolume, spawn,          SHCMD("pactl set-sink-volume 0 +5%; pkill -RTMIN+10 dwmblocks")},
+
+  	/* Change the bright */
+  	{ 0,               XF86XK_MonBrightnessUp,     spawn,	   SHCMD("xbacklight -inc 10; pkill -RTMIN+10 dwmblocks")},
+  	{ 0,               XF86XK_MonBrightnessDown,   spawn,  	   SHCMD("xbacklight -dec 10; pkill -RTMIN+10 dwmblocks")},
+
+  	/* Multimedia controls */
+  	{ 0,               XF86XK_AudioNext,	   spawn,          SHCMD("playerctl next")},
+  	{ 0,               XF86XK_AudioPrev,   	   spawn,          SHCMD("playerctl previous")},
+  	{ 0,               XF86XK_AudioPlay,   	   spawn,          SHCMD("playerctl play-pause")},
+  	{ 0,               XF86XK_AudioStop,   	   spawn,          SHCMD("playerctl stop")},
+
+  	 /* lockscreen with i3lock */
+  	{ MODKEY|ControlMask,			XK_l,      spawn,          SHCMD("i3lock-fancy")},
+	
+	/* Open App's*/
+	{	MODKEY|ShiftMask,			XK_f,	   spawn,		   SHCMD("firefox")},
+	{	MODKEY,						XK_c,	   spawn,		   SHCMD("st qalc")},
+
+	/* Screenshot */
+  	{MODKEY,           XK_Print,           spawn,          SHCMD("flameshot gui")},
+  	{0,                XK_Print,           spawn,          SHCMD("flameshot full -c")},
+  	{ShiftMask,        XK_Print,           spawn,          SHCMD("flameshot full -p /home/tiago/Pictures/screenshots")}
+  	/* {ControlMask,      XK_Print,           spawn,          SHCMD("scrot -u /home/tiago/Pictures/screenshots/`date +%Y-%m-%d_%H:%M:%S`.png")} */
 };
 
 /* button definitions */
