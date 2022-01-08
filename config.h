@@ -42,19 +42,30 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title    tags mask     isfloating  isterminal  noswallow   CenterThisWindow?     monitor */
-	{ "st",       NULL,       NULL,    0,            0,			 1,           0, 		   1,			       -1 },
-	{ "Gimp",     NULL,       NULL,    1 << 3,       0,          0,           0,  		   0,                  -1 },
-	{ "firefox",  NULL,     "About Mozilla Firefox",  0,   1,	 0,           0,           0,                  -1 },
-	{ "firefox",  NULL,     "Library",      0,	     1,          1,           0,           0,                  -1 },
-	{ "Arandr",   NULL,		  NULL,    0,            1,          0,           1,           0,				   -1 },
-	{ NULL,		  NULL,     "Event Tester", 0,       0,          0,           1,           0,				   -1 }, /* xev */
+	/* class				instance    title    tags mask     isfloating  isterminal  noswallow   CenterThisWindow?    monitor */
+	{ "st",       			NULL,       NULL,    0,             0,			1,          0,			 1,			        -1 },
+	{ "Gimp",     			NULL,       NULL,    1 << 3,        0,          0,          1,  		 0,                 -1 },
+	{ "firefox",  			NULL,     "About Mozilla Firefox",  0,   1,		0,			1,           0,                 -1 },
+	{ "firefox",  			NULL,     "Library",      0,	    1,          1,          1,           0,                 -1 },
+	{ "Arandr",   			NULL,		NULL,    0,             1,          0,          1,           0,				    -1 },
+	{ "TelegramDesktop",    NULL,		NULL,    1 << 7,		1,          0,          1,           0,					-1 },
+	{ "Deezer",             NULL,		NULL,    1 << 8,		1,          0,          1,           0,        			-1 },
+	{ "Bitwarden",          NULL,     	NULL,    0,				1,          0,          1,           0,        			-1 },
+	{ "st-256color",	    NULL,     	"qalc",  0,  	    	1,          1,          1,           1,        			-1 },
+	{ "Qalculate-gtk",	    NULL,     	NULL,	 0,  	    	1,          0,          1,           0,        			-1 },
+	{ "Arandr",             NULL,     	NULL,    0,         	1,          0,          1,           0,        			-1 },
+	{ "Lxappearance",       NULL,     	NULL,    0,         	1,          0,          1,           0,        			-1 },
+	{ "qt5ct",              NULL,     	NULL,    0,         	1,          0,          1,           0,        			-1 },
+	{ "Pavucontrol",        NULL,     	NULL,    0,         	1,          0,          1,           0,        			-1 },
+	{ "Pcmanfm",			NULL,  "Execute File",    0,        1,          0,          1,           0,			        -1 },
+	{ "Nvidia-settings",    NULL,  "NVIDIA X Server Settings",  0,      1,          0,           1,         0,	        -1 },
+	{ NULL,					NULL,  "Event Tester", 0,			  0,        0,          1,           0,			   	    -1 }, /* xev */
 };
 
 #include <X11/XF86keysym.h>
 
 /* layout(s) */
-static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -82,7 +93,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -94,13 +105,15 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *tabtermcmd[]  = { "tabbed", "-r 2", "st", "-w", "''", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,			            XK_Return, spawn,          {.v = termcmd } },
+	{ ControlMask, 					XK_Return, spawn,          {.v = tabtermcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
