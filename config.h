@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 5;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -21,7 +21,7 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
-static const unsigned int baralpha = 0xd0;
+static const unsigned int baralpha = 0xff;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
@@ -46,19 +46,19 @@ static const Rule rules[] = {
 	{ "st",       			NULL,       NULL,    0,             0,			1,          0,		   -1 },
 	{ "Gimp",     			NULL,       NULL,    1 << 3,        0,          0,          1,		   -1 },
 	{ "firefox",  			NULL,  "About Mozilla Firefox",  0,   1,		0,			1,         -1 },
-	{ "firefox",  			NULL,  "Library",    0,			    1,          1,          1,         -1 },
-	{ "Arandr",   			NULL,		NULL,    0,             1,          0,          1,         -1 },
-	{ "TelegramDesktop",    NULL,		NULL,    1 << 7,		1,          0,          1,         -1 },
-	{ "Deezer",             NULL,		NULL,    1 << 8,		1,          0,          1,         -1 },
-	{ "Bitwarden",          NULL,     	NULL,    0,				1,          0,          1,         -1 },
-	{ "st-256color",	    NULL,     	"qalc",  0,  	    	1,          1,          1,         -1 },
-	{ "Qalculate-gtk",	    NULL,     	NULL,	 0,  	    	1,          0,          1,         -1 },
-	{ "Arandr",             NULL,     	NULL,    0,         	1,          0,          1,         -1 },
-	{ "Lxappearance",       NULL,     	NULL,    0,         	1,          0,          1,         -1 },
-	{ "qt5ct",              NULL,     	NULL,    0,         	1,          0,          1,         -1 },
-	{ "Pavucontrol",        NULL,     	NULL,    0,         	1,          0,          1,         -1 },
-	{ "Virt-manager",       NULL,     	NULL,    0,         	1,          0,          1,         -1 },
-	{ "Pcmanfm",			NULL,  "Execute File",    0,        1,          0,          1,         -1 },
+	{ "firefox",  			NULL,  "Library",    0,			      1,          1,          1,         -1 },
+	{ "Arandr",   			NULL,		    NULL,    0,           1,          0,          1,         -1 },
+	{ "TelegramDesktop",    NULL,		NULL,    1 << 7,		  1,          0,          1,         -1 },
+	{ "Deezer",         NULL,		    NULL,    1 << 8,		  1,          0,          1,         -1 },
+	{ "Bitwarden",      NULL,     	NULL,    0,   				1,          0,          1,         -1 },
+	{ "st-256color",	  NULL,     	"qalc",  0,  	       	1,          1,          1,         -1 },
+	{ "Qalculate-gtk",  NULL,     	NULL,	   0,  	    	  1,          0,          1,         -1 },
+	{ "Arandr",         NULL,     	NULL,    0,         	1,          0,          1,         -1 },
+	{ "Lxappearance",   NULL,     	NULL,    0,         	1,          0,          1,         -1 },
+	{ "qt5ct",          NULL,     	NULL,    0,         	1,          0,          1,         -1 },
+	{ "Pavucontrol",    NULL,     	NULL,    0,         	1,          0,          1,         -1 },
+	{ "Virt-manager",   NULL,     	NULL,    0,         	1,          0,          1,         -1 },
+	{ "Pcmanfm",			  NULL,  "Execute File",    0,        1,          0,          1,         -1 },
 	{ "Nvidia-settings",    NULL,  "NVIDIA X Server Settings",  0,      1,      0,      1,         -1 },
 	{ NULL,					NULL,  "Event Tester", 0,			0,          0,          1,         -1 }, /* xev */
 };
@@ -195,11 +195,11 @@ static Key keys[] = {
   	 /* lockscreen with i3lock */
   	{ MODKEY|ControlMask,			XK_l,      spawn,          SHCMD("slock")},
 	
-	/* Open App's*/
-	{	MODKEY|ShiftMask,			XK_f,	   spawn,		   SHCMD("firefox")},
-	{	MODKEY,						XK_c,	   spawn,		   SHCMD("st qalc")},
+	  /* Open App's*/
+	  {	MODKEY,						XK_c,	   spawn,		   SHCMD("st qalc")},
+	  {	MODKEY,						XK_n,	   spawn,		   SHCMD("pcmanfm")},
 
-	/* Screenshot */
+	  /* Screenshot */
   	{MODKEY,           XK_Print,           spawn,          SHCMD("flameshot gui")},
   	{0,                XK_Print,           spawn,          SHCMD("flameshot full -c")},
   	{ShiftMask,        XK_Print,           spawn,          SHCMD("flameshot full -p $HOME/img/screenshots")}
