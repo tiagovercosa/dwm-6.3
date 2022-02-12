@@ -1,32 +1,38 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 5;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
+static const unsigned int gappiv    = 5;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 5;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
-static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
+static const unsigned int gappov    = 5;       /* vert outer gap between windows and screen edge */
+static       int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 /* static const char *fonts[]          = { "monospace:size=10" }; */
-static const char *fonts[]          = { "Hack Nerd Font Mono:size=10:antialias=true:autohint=true",
-                                        "Hack:size=8:antialias=true:autohint=true",
+static const char *fonts[]          = { "Roboto Mono Medium:size=11:antialias=true:autohint=true",
+                                        "Hack Nerd Font:size=8:antialias=true:autohint=true",
                                         "JoyPixels:size=10:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Hack Nerd Font Mono:size=10";
 static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
+static const char col_gray2[]       = "#65a957";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const unsigned int baralpha = 0xff;
+static const char col_cyan[]        = "#ff9901";
+/* Bar opacity 
+ * 0xff is no transparency.
+ * 0xee adds wee bit of transparency.
+ * Play with the value to get desired transparency.
+ * 0xd0
+ */
+static const unsigned int baralpha = 0xee;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeSel]  = { col_gray1, col_cyan,  col_cyan  },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -48,6 +54,7 @@ static const Rule rules[] = {
 	{ "firefox",  			NULL,  "About Mozilla Firefox",  0,   1,		0,			1,         -1 },
 	{ "firefox",  			NULL,  "Library",    0,			      1,          1,          1,         -1 },
 	{ "Arandr",   			NULL,		    NULL,    0,           1,          0,          1,         -1 },
+	{ "Nitrogen", 			NULL,		    NULL,    0,           1,          0,          1,         -1 },
 	{ "TelegramDesktop",    NULL,		NULL,    1 << 7,		  1,          0,          1,         -1 },
 	{ "Deezer",         NULL,		    NULL,    1 << 8,		  1,          0,          1,         -1 },
 	{ "Bitwarden",      NULL,     	NULL,    0,   				1,          0,          1,         -1 },
@@ -58,7 +65,7 @@ static const Rule rules[] = {
 	{ "qt5ct",          NULL,     	NULL,    0,         	1,          0,          1,         -1 },
 	{ "Pavucontrol",    NULL,     	NULL,    0,         	1,          0,          1,         -1 },
 	{ "Virt-manager",   NULL,     	NULL,    0,         	1,          0,          1,         -1 },
-	{ "Pcmanfm",			  NULL,  "Execute File",    0,        1,          0,          1,         -1 },
+	{ "Pcmanfm",			  NULL,  "Execute File",    0,      1,          0,          1,         -1 },
 	{ "Nvidia-settings",    NULL,  "NVIDIA X Server Settings",  0,      1,      0,      1,         -1 },
 	{ NULL,					NULL,  "Event Tester", 0,			0,          0,          1,         -1 }, /* xev */
 };
@@ -66,7 +73,7 @@ static const Rule rules[] = {
 #include <X11/XF86keysym.h>
 
 /* layout(s) */
-static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -106,15 +113,15 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run",  "-p",  "Run:", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run",  "-p",  "Run:", "-b", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *tabtermcmd[]  = { "tabbed", "-r 2", "st", "-w", "''", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,			            XK_Return, spawn,          {.v = termcmd } },
-	{ ControlMask, 					XK_Return, spawn,          {.v = tabtermcmd } },
+	{ MODKEY,			                  XK_Return, spawn,          {.v = termcmd } },
+	{ ControlMask, 					        XK_Return, spawn,          {.v = tabtermcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY|ShiftMask,             XK_j,      rotatestack,    {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      rotatestack,    {.i = -1 } },
@@ -147,11 +154,11 @@ static Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,			            XK_q,      killclient,     {0} },
+	{ MODKEY,			                  XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ControlMask,			XK_comma,  cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,			      XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
@@ -171,11 +178,11 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
-	{ MODKEY|ShiftMask,				XK_r,      quit,           {1} }, 
+	{ MODKEY|ShiftMask,				      XK_r,      quit,           {1} }, 
 
 	/* Dmenu scripts launched with ALT + CTRL + KEY */
-  	{ Mod1Mask|ControlMask,         XK_q,      spawn,          SHCMD("~/.local/bin/dmenu-logout.sh") },
-  	{ Mod1Mask|ControlMask,         XK_m,      spawn,          SHCMD("~/.local/bin/dmenu-monitor.sh") },
+  	{ Mod1Mask|ShiftMask,           XK_q,      spawn,          SHCMD("~/.local/bin/dmenu-logout.sh") },
+  	{ Mod1Mask,                   XK_m,      spawn,          SHCMD("~/.local/bin/monitor-X.sh") },
 
   	/* Change the volume */
   	{ 0,              XF86XK_AudioLowerVolume, spawn,          SHCMD("pactl set-sink-volume 0 -5%; pkill -RTMIN+10 dwmblocks")},
@@ -187,13 +194,13 @@ static Key keys[] = {
   	{ 0,               XF86XK_MonBrightnessDown,   spawn,  	   SHCMD("xbacklight -dec 10; pkill -RTMIN+10 dwmblocks")},
 
   	/* Multimedia controls */
-  	{ 0,               XF86XK_AudioNext,	   spawn,          SHCMD("playerctl next")},
+  	{ 0,               XF86XK_AudioNext,	     spawn,          SHCMD("playerctl next")},
   	{ 0,               XF86XK_AudioPrev,   	   spawn,          SHCMD("playerctl previous")},
   	{ 0,               XF86XK_AudioPlay,   	   spawn,          SHCMD("playerctl play-pause")},
   	{ 0,               XF86XK_AudioStop,   	   spawn,          SHCMD("playerctl stop")},
 
   	 /* lockscreen with i3lock */
-  	{ MODKEY|ControlMask,			XK_l,      spawn,          SHCMD("slock")},
+  	{ MODKEY|ControlMask,			XK_l,      spawn,          SHCMD("i3lock -c 000000")},
 	
 	  /* Open App's*/
 	  {	MODKEY,						XK_c,	   spawn,		   SHCMD("st qalc")},
