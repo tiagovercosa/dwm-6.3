@@ -7,20 +7,19 @@ static const unsigned int gappih    = 5;       /* horiz inner gap between window
 static const unsigned int gappiv    = 5;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 5;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 5;       /* vert outer gap between windows and screen edge */
-static       int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
+static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-/* static const char *fonts[]          = { "monospace:size=10" }; */
-static const char *fonts[]          = { "Roboto Mono Medium:size=11:antialias=true:autohint=true",
-                                        "Hack Nerd Font:size=8:antialias=true:autohint=true",
-                                        "JoyPixels:size=10:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Hack Nerd Font Mono:size=10";
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=13:antialias=true:autohint=true",
+                                        "Hack Nerd Font:size=11:antialias=true:autohint=true",
+                                        "JoyPixels:size=11:antialias=true:autohint=true" };
+static const char dmenufont[]       = "JetBrainsMono Nerd Font:size=12";
 static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#65a957";
+static const char col_gray2[]       = "#302d41";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#ff9901";
+static const char col_cyan[]        = "#96cdfb";
 /* Bar opacity 
  * 0xff is no transparency.
  * 0xee adds wee bit of transparency.
@@ -50,13 +49,9 @@ static const Rule rules[] = {
 	 */
 	/* class				instance    title    tags mask     isfloating  isterminal  noswallow   monitor */
 	{ "st",       			NULL,       NULL,    0,             0,			1,          0,		   -1 },
-	{ "Gimp",     			NULL,       NULL,    1 << 3,        0,          0,          1,		   -1 },
 	{ "firefox",  			NULL,  "About Mozilla Firefox",  0,   1,		0,			1,         -1 },
 	{ "firefox",  			NULL,  "Library",    0,			      1,          1,          1,         -1 },
 	{ "Arandr",   			NULL,		    NULL,    0,           1,          0,          1,         -1 },
-	{ "Nitrogen", 			NULL,		    NULL,    0,           1,          0,          1,         -1 },
-	{ "TelegramDesktop",    NULL,		NULL,    1 << 7,		  1,          0,          1,         -1 },
-	{ "Deezer",         NULL,		    NULL,    1 << 8,		  1,          0,          1,         -1 },
 	{ "Bitwarden",      NULL,     	NULL,    0,   				1,          0,          1,         -1 },
 	{ "st-256color",	  NULL,     	"qalc",  0,  	       	1,          1,          1,         -1 },
 	{ "Qalculate-gtk",  NULL,     	NULL,	   0,  	    	  1,          0,          1,         -1 },
@@ -65,7 +60,8 @@ static const Rule rules[] = {
 	{ "qt5ct",          NULL,     	NULL,    0,         	1,          0,          1,         -1 },
 	{ "Pavucontrol",    NULL,     	NULL,    0,         	1,          0,          1,         -1 },
 	{ "Virt-manager",   NULL,     	NULL,    0,         	1,          0,          1,         -1 },
-	{ "Pcmanfm",			  NULL,  "Execute File",    0,      1,          0,          1,         -1 },
+	{ "R_x11",				  NULL,			  NULL,    0,           1,          0,          1,         -1 },
+	{ "gnuplot_qt",     NULL,       NULL,    0,           1,          0,          1,         -1 },
 	{ "Nvidia-settings",    NULL,  "NVIDIA X Server Settings",  0,      1,      0,      1,         -1 },
 	{ NULL,					NULL,  "Event Tester", 0,			0,          0,          1,         -1 }, /* xev */
 };
@@ -125,8 +121,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY|ShiftMask,             XK_j,      rotatestack,    {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      rotatestack,    {.i = -1 } },
-	{ MODKEY,                       XK_Left,   rotatetags,     {.i = -1 } },
-	{ MODKEY,                       XK_Right,  rotatetags,     {.i = +1 } },
+	{ MODKEY,                       XK_comma,  rotatetags,     {.i = -1 } },
+	{ MODKEY,                       XK_period, rotatetags,     {.i = +1 } },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -164,10 +160,10 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_Left,   focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_Right,  focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_Left,	 tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_Right,  tagmon,         {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -200,11 +196,11 @@ static Key keys[] = {
   	{ 0,               XF86XK_AudioStop,   	   spawn,          SHCMD("playerctl stop")},
 
   	 /* lockscreen with i3lock */
-  	{ MODKEY|ControlMask,			XK_l,      spawn,          SHCMD("i3lock -c 000000")},
+  	{ MODKEY|ControlMask,			XK_l,      spawn,          SHCMD("$HOME/.local/bin/myi3lock")},
 	
 	  /* Open App's*/
-	  {	MODKEY,						XK_c,	   spawn,		   SHCMD("st qalc")},
-	  {	MODKEY,						XK_n,	   spawn,		   SHCMD("pcmanfm")},
+	  {	MODKEY,						XK_c,	   spawn,		   SHCMD("st -e qalc")},
+	  {	MODKEY,						XK_n,	   spawn,		   SHCMD("st -e nnn -cdi")},
 
 	  /* Screenshot */
   	{MODKEY,           XK_Print,           spawn,          SHCMD("flameshot gui")},
